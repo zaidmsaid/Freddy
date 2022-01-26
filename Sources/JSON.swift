@@ -25,11 +25,11 @@ public enum JSON {
     /// A case for denoting null.
     case null
     
-    func get(stringAt path: JSONPathType, _ defaultValue: String) -> String {
+    public func get(stringAt path: JSONPathType, _ defaultValue: String) -> String {
         get(stringAt: path) ?? defaultValue
     }
     
-    func get(stringAt path: JSONPathType) -> String? {
+    public func get(stringAt path: JSONPathType) -> String? {
         do {
             return try getString(at: path, alongPath: [.nullBecomesNil, .missingKeyBecomesNil])
         } catch {
@@ -37,11 +37,11 @@ public enum JSON {
         }
     }
     
-    func get(intAt path: JSONPathType, _ defaultValue: Int) -> Int {
+    public func get(intAt path: JSONPathType, _ defaultValue: Int) -> Int {
         get(intAt: path) ?? defaultValue
     }
     
-    func get(intAt path: JSONPathType) -> Int? {
+    public func get(intAt path: JSONPathType) -> Int? {
         do {
             return try getInt(at: path, alongPath: [.nullBecomesNil, .missingKeyBecomesNil])
         } catch {
@@ -49,11 +49,11 @@ public enum JSON {
         }
     }
     
-    func get(arrayAt path: JSONPathType, _ defaultValue: [JSON]) -> [JSON] {
+    public func get(arrayAt path: JSONPathType, _ defaultValue: [JSON]) -> [JSON] {
         get(arrayAt: path) ?? defaultValue
     }
     
-    func get(arrayAt path: JSONPathType) -> [JSON]? {
+    public func get(arrayAt path: JSONPathType) -> [JSON]? {
         do {
             return try getArray(at: path, alongPath: [.nullBecomesNil, .missingKeyBecomesNil])
         } catch {
@@ -61,11 +61,11 @@ public enum JSON {
         }
     }
     
-    func get(jsonAt path: JSONPathType, _ defaultValue: JSON) -> JSON {
+    public func get(jsonAt path: JSONPathType, _ defaultValue: JSON) -> JSON {
         get(jsonAt: path) ?? defaultValue
     }
     
-    func get(jsonAt path: JSONPathType) -> JSON? {
+    public func get(jsonAt path: JSONPathType) -> JSON? {
         do {
             guard let dictionary = try getDictionary(at: path, alongPath: [.nullBecomesNil, .missingKeyBecomesNil]) else {
                 return nil
@@ -76,11 +76,11 @@ public enum JSON {
         }
     }
     
-    func get(boolAt path: JSONPathType, _ defaultValue: Bool) -> Bool {
+    public func get(boolAt path: JSONPathType, _ defaultValue: Bool) -> Bool {
         get(boolAt: path) ?? defaultValue
     }
     
-    func get(boolAt path: JSONPathType) -> Bool? {
+    public func get(boolAt path: JSONPathType) -> Bool? {
         do {
             return try getBool(at: path, alongPath: [.nullBecomesNil, .missingKeyBecomesNil])
         } catch {
@@ -88,11 +88,11 @@ public enum JSON {
         }
     }
     
-    func get(doubleAt path: JSONPathType, _ defaultValue: Double) -> Double {
+    public func get(doubleAt path: JSONPathType, _ defaultValue: Double) -> Double {
         get(doubleAt: path) ?? defaultValue
     }
     
-    func get(doubleAt path: JSONPathType) -> Double? {
+    public func get(doubleAt path: JSONPathType) -> Double? {
         do {
             guard let value = try getDouble(at: path, alongPath: [.nullBecomesNil, .missingKeyBecomesNil]) else {
                 return nil
@@ -106,22 +106,22 @@ public enum JSON {
         }
     }
     
-    func get(cgFloatAt path: JSONPathType, _ defaultValue: CGFloat) -> CGFloat {
+    public func get(cgFloatAt path: JSONPathType, _ defaultValue: CGFloat) -> CGFloat {
         get(cgFloatAt: path) ?? defaultValue
     }
     
-    func get(cgFloatAt path: JSONPathType) -> CGFloat? {
+    public func get(cgFloatAt path: JSONPathType) -> CGFloat? {
         guard let value = get(floatAt: path) else {
             return nil
         }
         return CGFloat(value)
     }
     
-    func get(floatAt path: JSONPathType, _ defaultValue: Float) -> Float {
+    public func get(floatAt path: JSONPathType, _ defaultValue: Float) -> Float {
         get(floatAt: path) ?? defaultValue
     }
     
-    func get(floatAt path: JSONPathType) -> Float? {
+    public func get(floatAt path: JSONPathType) -> Float? {
         guard let value = get(doubleAt: path) else {
             return nil
         }
@@ -134,11 +134,11 @@ public enum JSON {
         return floatValue
     }
     
-    func get(dictionaryAt path: JSONPathType, _ defaultValue: [String: JSON]) -> [String: JSON] {
+    public func get(dictionaryAt path: JSONPathType, _ defaultValue: [String: JSON]) -> [String: JSON] {
         get(dictionaryAt: path) ?? defaultValue
     }
     
-    func get(dictionaryAt path: JSONPathType) -> [String: JSON]? {
+    public func get(dictionaryAt path: JSONPathType) -> [String: JSON]? {
         do {
             guard let value = try getDictionary(at: path, alongPath: [.nullBecomesNil, .missingKeyBecomesNil]) else {
                 return nil
