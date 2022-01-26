@@ -6,6 +6,8 @@
 //  Copyright © 2015 Big Nerd Ranch. Licensed under MIT.
 //
 
+import Foundation
+
 /// An enum to describe the structure of JSON.
 public enum JSON {
     /// A case for denoting an array with an associated value of `[JSON]`
@@ -22,6 +24,130 @@ public enum JSON {
     case bool(Bool)
     /// A case for denoting null.
     case null
+    
+    func get(stringAt path: JSONPathType, _ defaultValue: String) -> String {
+        get(stringAt: path) ?? defaultValue
+    }
+    
+    func get(stringAt path: JSONPathType) -> String? {
+        do {
+            return try getString(at: path, alongPath: [.nullBecomesNil, .missingKeyBecomesNil])
+        } catch {
+            return nil
+        }
+    }
+    
+    func get(intAt path: JSONPathType, _ defaultValue: Int) -> Int {
+        get(intAt: path) ?? defaultValue
+    }
+    
+    func get(intAt path: JSONPathType) -> Int? {
+        do {
+            return try getInt(at: path, alongPath: [.nullBecomesNil, .missingKeyBecomesNil])
+        } catch {
+            return nil
+        }
+    }
+    
+    func get(arrayAt path: JSONPathType, _ defaultValue: [JSON]) -> [JSON] {
+        get(arrayAt: path) ?? defaultValue
+    }
+    
+    func get(arrayAt path: JSONPathType) -> [JSON]? {
+        do {
+            return try getArray(at: path, alongPath: [.nullBecomesNil, .missingKeyBecomesNil])
+        } catch {
+            return nil
+        }
+    }
+    
+    func get(jsonAt path: JSONPathType, _ defaultValue: JSON) -> JSON {
+        get(jsonAt: path) ?? defaultValue
+    }
+    
+    func get(jsonAt path: JSONPathType) -> JSON? {
+        do {
+            guard let dictionary = try getDictionary(at: path, alongPath: [.nullBecomesNil, .missingKeyBecomesNil]) else {
+                return nil
+            }
+            return JSON(dictionary)
+        } catch {
+            return nil
+        }
+    }
+    
+    func get(boolAt path: JSONPathType, _ defaultValue: Bool) -> Bool {
+        get(boolAt: path) ?? defaultValue
+    }
+    
+    func get(boolAt path: JSONPathType) -> Bool? {
+        do {
+            return try getBool(at: path, alongPath: [.nullBecomesNil, .missingKeyBecomesNil])
+        } catch {
+            return get(stringAt: path)?.lowercased() == "true"
+        }
+    }
+    
+    func get(doubleAt path: JSONPathType, _ defaultValue: Double) -> Double {
+        get(doubleAt: path) ?? defaultValue
+    }
+    
+    func get(doubleAt path: JSONPathType) -> Double? {
+        do {
+            guard let value = try getDouble(at: path, alongPath: [.nullBecomesNil, .missingKeyBecomesNil]) else {
+                return nil
+            }
+            guard value.isFinite, !value.isNaN else {
+                return nil
+            }
+            return value
+        } catch {
+            return nil
+        }
+    }
+    
+    func get(cgFloatAt path: JSONPathType, _ defaultValue: CGFloat) -> CGFloat {
+        get(cgFloatAt: path) ?? defaultValue
+    }
+    
+    func get(cgFloatAt path: JSONPathType) -> CGFloat? {
+        guard let value = get(floatAt: path) else {
+            return nil
+        }
+        return CGFloat(value)
+    }
+    
+    func get(floatAt path: JSONPathType, _ defaultValue: Float) -> Float {
+        get(floatAt: path) ?? defaultValue
+    }
+    
+    func get(floatAt path: JSONPathType) -> Float? {
+        guard let value = get(doubleAt: path) else {
+            return nil
+        }
+        
+        let floatValue = Float(value)
+        
+        guard floatValue.isFinite, !floatValue.isNaN else {
+            return nil
+        }
+        return floatValue
+    }
+    
+    func get(dictionaryAt path: JSONPathType, _ defaultValue: [String: JSON]) -> [String: JSON] {
+        get(dictionaryAt: path) ?? defaultValue
+    }
+    
+    func get(dictionaryAt path: JSONPathType) -> [String: JSON]? {
+        do {
+            guard let value = try getDictionary(at: path, alongPath: [.nullBecomesNil, .missingKeyBecomesNil]) else {
+                return nil
+            }
+            return value
+        } catch {
+            return nil
+        }
+    }
 }
 
 // MARK: - Errors
