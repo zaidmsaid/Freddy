@@ -351,7 +351,7 @@ class JSONParserTests: XCTestCase {
     //     fatal error: floating point value can not be converted to Int because it is greater than Int.max
     // because we assumed the double would be in range of Int.
     func testReturnsNilWhenDoubleValueExceedingIntMaxIsAccessedAsInt() {
-        let anyFloatingPointValueExceedingIntMax = Double(UInt(Int.max) + 1)
+        let anyFloatingPointValueExceedingIntMax = Double(UInt.max) + 1
         let jsonString = "{\"exceedsIntMax\": \(anyFloatingPointValueExceedingIntMax)}"
 
         let data = jsonString.data(using: String.Encoding.utf8)!
